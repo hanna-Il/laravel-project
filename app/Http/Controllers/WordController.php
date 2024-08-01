@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,20 +40,19 @@ class WordController extends Controller
         return view('words.index', [
             'word' => $word,
             'options' => $options,
-            'score' => $request->session()->get('score')
+            'score' => $request->session()->get('score'),
+            'mode' => $mode
         ]);
     }
 
-    public function check(Request $request): JsonResponse
+    public function check(Request $request)
     {
         $word = DB::table('words')->find($request->word_id);
         $mode = $request->session()->get('mode');
 
-        if ($mode === 'german_to_russian') {
-                $correct = $word->russian === $request->selected_option;
-            } else {
-                $correct = $word->german === $request->selected_option;
-            }
+        $correct = ($mode == 'german_to_russian')
+            ? $word->russian === $request->selected_option
+            : $word->german === $request->selected_option;
 
         if ($correct) {
             $request->session()->increment('score');
