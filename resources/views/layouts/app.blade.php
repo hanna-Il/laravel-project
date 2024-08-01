@@ -12,16 +12,14 @@
             padding: 10px;
             border: 1px solid #ccc;
             cursor: pointer;
-        }
-
-        .selected {
-            background-color: #ddd;
+            user-select: none; /* Запрещает выделение текста */
         }
 
         .nav-link {
             cursor: pointer;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

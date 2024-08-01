@@ -1,27 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Composing sentences</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <style>
-        .word {
-            display: inline-block;
-            margin: 5px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
+@extends('layouts.app')
 
-        .selected {
-            background-color: #ddd;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h1 class="text-center my-4">Make a correct sentence</h1>
+@section('content')
+    <h1 class="text-center my-4">Составьте правильное предложение</h1>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -37,7 +17,7 @@
 
     <form action="{{ route('sentence.check') }}" method="POST" id="sentenceForm">
         @csrf
-        <div class="d-flex justify-content-center mb-4">
+        <div id="sortable-container" class="d-flex justify-content-center mb-4">
             @foreach ($words as $word)
                 <div class="word">{{ $word }}</div>
             @endforeach
@@ -50,31 +30,33 @@
             <button type="submit" class="btn btn-primary">Проверить</button>
         </div>
     </form>
-</div>
 
-<script>
-    let selectedWords = [];
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sortableContainer = document.getElementById('sortable-container');
+            var sortable = new Sortable(sortableContainer, {
+                animation: 150,
+                onEnd: function() {
+                    var order = [];
+                    sortableContainer.querySelectorAll('.word').forEach(function(word) {
+                        order.push(word.textContent.trim());
+                    });
+                    document.getElementById('order').value = JSON.stringify(order);
+                }
+            });
 
-    document.querySelectorAll('.word').forEach(word => {
-        word.addEventListener('click', function () {
-            if (this.classList.contains('selected')) {
-                this.classList.remove('selected');
-                selectedWords = selectedWords.filter(w => w !== this.textContent);
-            } else {
-                this.classList.add('selected');
-                selectedWords.push(this.textContent);
-            }
+            document.getElementById('sentenceForm').addEventListener('submit', function(event) {
+                var order = [];
+                sortableContainer.querySelectorAll('.word').forEach(function(word) {
+                    order.push(word.textContent.trim());
+                });
+                document.getElementById('order').value = JSON.stringify(order);
 
-            document.getElementById('order').value = JSON.stringify(selectedWords);
+                if (order.length !== {{ count($words) }}) {
+                    event.preventDefault();
+                    alert('Выберите все слова!');
+                }
+            });
         });
-    });
-
-    document.getElementById('sentenceForm').addEventListener('submit', function (event) {
-        if (selectedWords.length !== {{ count($words) }}) {
-            event.preventDefault();
-            alert('Выберите все слова!');
-        }
-    });
-</script>
-</body>
-</html>
+    </script>
+@endsection

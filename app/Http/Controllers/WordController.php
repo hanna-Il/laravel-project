@@ -2,77 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Word;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class WordController extends Controller
 {
     public function index(Request $request)
     {
-        if (!$request->session()->has('passed_words')) {
-            $request->session()->put('passed_words', []);
+        $mode = $request->input('mode', 'german_to_russian');
+
+        $words = Word::all();
+        $currentWord = $words->random();
+        $correctTranslation = ($mode === 'german_to_russian') ? $currentWord->russian : $currentWord->german;
+
+        $options = $words->pluck($mode === 'german_to_russian' ? 'russian' : 'german')->shuffle()->take(4)->toArray();
+        if (!in_array($correctTranslation, $options)) {
+            $options[array_rand($options)] = $correctTranslation;
         }
 
-        if (!$request->session()->has('score')) {
-            $request->session()->put('score', 0);
-        }
-
-        if (!$request->session()->has('mode')) {
-            $request->session()->put('mode', 'german_to_russian'); //default mode
-        }
-
-        $passedWords = $request->session()->get('passed_words');
-        $mode = $request->session()->get('mode');
-
-        $word = DB::table('words')->WhereNotIn('id', $passedWords)->inRandomOrder()->first();
-
-        if(!$word) {
-            $request->session()->forget('passed_words');
-            $word = DB::table('words')->inRandomOrder()->first();
-        }
-
-        $options = DB::table('words')->where('id', '!=', $word->id)->inRandomOrder()->limit(3)->get();
-
-        $options->push($word);
-
-        $options = $options->shuffle();
-
-        return view('words.index', [
-            'word' => $word,
+        return view('word.index', [
+            'currentWord' => $currentWord,
             'options' => $options,
-            'score' => $request->session()->get('score'),
             'mode' => $mode
         ]);
     }
 
     public function check(Request $request)
     {
-        $word = DB::table('words')->find($request->word_id);
-        $mode = $request->session()->get('mode');
+        $mode = $request->input('mode');
+        $currentWord = Word::find($request->input('current_word_id'));
+        $correctTranslation = ($mode === 'german_to_russian') ? $currentWord->russian : $currentWord->german;
+        $selectedWord = $request->input('selected_word');
 
-        $correct = ($mode == 'german_to_russian')
-            ? $word->russian === $request->selected_option
-            : $word->german === $request->selected_option;
-
-        if ($correct) {
-            $request->session()->increment('score');
+        if ($correctTranslation === $selectedWord) {
+            Session::increment('score');
+            return redirect()->route('word.index', ['mode' => $mode])->with('success', 'Правильно!');
         } else {
-            $request->session()->put('score', 0);
+            Session::put('score', 0);
+            return redirect()->route('word.index', ['mode' => $mode])->with('error', 'Неправильно! Попробуйте ещё раз.');
         }
-
-        $passedWords = $request->session()->get('passed_words');
-        $passedWords[] = $word->id;
-        $request->session()->put('passed_words', $passedWords);
-
-        return response()->json(['correct' => $correct, 'score' => $request->session()->get('score')]);
-    }
-
-    public function toggleMode(Request $request)
-    {
-        $currentMode = $request->session()->get('mode', 'german_to_russian');
-        $newMode = ($currentMode === 'german_to_russian') ? 'russian_to_german' : 'german_to_russian';
-        $request->session()->put('mode', $newMode);
-
-        return redirect('/');
     }
 }
