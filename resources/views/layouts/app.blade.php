@@ -32,6 +32,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('sentence.index') }}">Предложения</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('grammar.index') }}">Предлоги</a>
+            </li>
         </ul>
     </div>
 </nav>
