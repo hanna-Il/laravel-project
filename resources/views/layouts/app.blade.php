@@ -12,7 +12,7 @@
             padding: 10px;
             border: 1px solid #ccc;
             cursor: pointer;
-            user-select: none; /* Запрещает выделение текста */
+            user-select: none;
         }
 
         .nav-link {
@@ -34,6 +34,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('grammar.index') }}">Предлоги</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('conjugation.index') }}">Спряжение глаголов</a>
             </li>
         </ul>
     </div>

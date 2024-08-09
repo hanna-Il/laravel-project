@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConjugationExerciseController;
 use App\Http\Controllers\GrammarExerciseController;
 use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\WordController;
@@ -17,3 +18,6 @@ Route::post('/sentences/check', [SentenceController::class, 'check'])->name('sen
 
 Route::get('/grammar', [GrammarExerciseController::class, 'index'])->name('grammar.index');
 Route::post('/grammar/check', [GrammarExerciseController::class, 'check'])->name('grammar.check');
+
+Route::get('/conjugation', [ConjugationExerciseController::class, 'index'])->name('conjugation.index');
+Route::post('/conjugation/check', [ConjugationExerciseController::class, 'check'])->name('conjugation.check');
