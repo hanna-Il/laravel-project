@@ -38,7 +38,7 @@
                 animation: 150,
                 onEnd: function() {
                     var order = [];
-                    sortableContainer.querySelectorAll('.word').forEach(function(word) {
+                    sortableContainer.querySelectorAll('.words').forEach(function(word) {
                         order.push(word.textContent.trim());
                     });
                     document.getElementById('order').value = JSON.stringify(order);
@@ -47,7 +47,7 @@
 
             document.getElementById('sentenceForm').addEventListener('submit', function(event) {
                 var order = [];
-                sortableContainer.querySelectorAll('.word').forEach(function(word) {
+                sortableContainer.querySelectorAll('.words').forEach(function(word) {
                     order.push(word.textContent.trim());
                 });
                 document.getElementById('order').value = JSON.stringify(order);

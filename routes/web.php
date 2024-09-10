@@ -7,11 +7,11 @@ use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('word.index');
+    return redirect()->route('words.index');
 });
 
-Route::get('/words', [WordController::class, 'index'])->name('word.index');
-Route::post('/words/check', [WordController::class, 'check'])->name('word.check');
+Route::get('/words', [WordController::class, 'index'])->name('words.index');
+Route::post('/words/check', [WordController::class, 'check'])->name('words.check');
 
 Route::get('/sentences', [SentenceController::class, 'index'])->name('sentence.index');
 Route::post('/sentences/check', [SentenceController::class, 'check'])->name('sentence.check');

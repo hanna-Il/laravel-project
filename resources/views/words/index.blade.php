@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <form action="{{ route('word.check') }}" method="POST">
+    <form action="{{ route('words.check') }}" method="POST">
         @csrf
         <div class="card">
             <div class="card-body text-center">
@@ -32,8 +32,8 @@
     </form>
 
     <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-lg btn-secondary mx-2" onclick="window.location.href='{{ route('word.index', ['mode' => 'german_to_russian']) }}'">Немецкий -> Русский</button>
-        <button class="btn btn-lg btn-secondary mx-2" onclick="window.location.href='{{ route('word.index', ['mode' => 'russian_to_german']) }}'">Русский -> Немецкий</button>
+        <button class="btn btn-lg btn-secondary mx-2" onclick="window.location.href='{{ route('words.index', ['mode' => 'german_to_russian']) }}'">Немецкий -> Русский</button>
+        <button class="btn btn-lg btn-secondary mx-2" onclick="window.location.href='{{ route('words.index', ['mode' => 'russian_to_german']) }}'">Русский -> Немецкий</button>
     </div>
 
     <div class="d-flex justify-content-center mt-4">

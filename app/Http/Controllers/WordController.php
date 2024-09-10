@@ -13,6 +13,11 @@ class WordController extends Controller
         $mode = $request->input('mode', 'german_to_russian');
 
         $words = Word::all();
+        if ($words->isEmpty()) {
+            return view('words.index', [
+                'message' => 'В базе данных нет слов. Добавьте слова для начала.'
+            ]);
+        }
         $currentWord = $words->random();
         $correctTranslation = ($mode === 'german_to_russian') ? $currentWord->russian : $currentWord->german;
 
@@ -21,7 +26,7 @@ class WordController extends Controller
             $options[array_rand($options)] = $correctTranslation;
         }
 
-        return view('word.index', [
+        return view('words.index', [
             'currentWord' => $currentWord,
             'options' => $options,
             'mode' => $mode
@@ -37,10 +42,10 @@ class WordController extends Controller
 
         if ($correctTranslation === $selectedWord) {
             Session::increment('score');
-            return redirect()->route('word.index', ['mode' => $mode])->with('success', 'Правильно!');
+            return redirect()->route('words.index', ['mode' => $mode])->with('success', 'Правильно!');
         } else {
             Session::put('score', 0);
-            return redirect()->route('word.index', ['mode' => $mode])->with('error', 'Неправильно! Попробуйте ещё раз.');
+            return redirect()->route('words.index', ['mode' => $mode])->with('error', 'Неправильно! Попробуйте ещё раз.');
         }
     }
 }
