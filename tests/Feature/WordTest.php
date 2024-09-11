@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SentenceController;
+use App\Http\Controllers\WordController;
 use App\Models\Word;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

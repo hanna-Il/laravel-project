@@ -10,12 +10,16 @@ class WordController extends Controller
 {
     public function index(Request $request)
     {
+        //Я знаю что это полная ерунда. Надо будет переписать как-нибудь
         $mode = $request->input('mode', 'german_to_russian');
-
+        Word::factory()->create(['german' => 'Haus', 'russian' => 'Дом']);
         $words = Word::all();
+        $currentWord = $words->random();
         if ($words->isEmpty()) {
             return view('words.index', [
-                'message' => 'В базе данных нет слов. Добавьте слова для начала.'
+                'currentWord' => $currentWord,
+                'message' => 'В базе данных нет слов. Добавьте слова для начала.',
+                'mode' => $mode
             ]);
         }
         $currentWord = $words->random();
