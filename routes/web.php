@@ -3,6 +3,7 @@
 use App\Http\Controllers\ConjugationExerciseController;
 use App\Http\Controllers\GrammarExerciseController;
 use App\Http\Controllers\SentenceController;
+use App\Http\Controllers\VerbController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::post('/grammar/check', [GrammarExerciseController::class, 'check'])->name
 
 Route::get('/conjugation', [ConjugationExerciseController::class, 'index'])->name('conjugation.index');
 Route::post('/conjugation/check', [ConjugationExerciseController::class, 'check'])->name('conjugation.check');
+
+Route::get('/verbs', [VerbController::class, 'index'])->name('verbs.index');
+Route::post('/verbs/check', [VerbController::class, 'check'])->name('verbs.check');

@@ -38,6 +38,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('conjugation.index') }}">Спряжение глаголов</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('verbs.index') }}">Опять про глаголы</a>
+            </li>
         </ul>
     </div>
 </nav>
