@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AudioExerciseController;
 use App\Http\Controllers\ConjugationExerciseController;
 use App\Http\Controllers\GrammarExerciseController;
 use App\Http\Controllers\SentenceController;
@@ -25,3 +26,6 @@ Route::post('/conjugation/check', [ConjugationExerciseController::class, 'check'
 
 Route::get('/verbs', [VerbController::class, 'index'])->name('verbs.index');
 Route::post('/verbs/check', [VerbController::class, 'check'])->name('verbs.check');
+
+Route::get('/audio', [AudioExerciseController::class, 'index'])->name('audio.index');
+Route::post('/audio/check', [AudioExerciseController::class, 'check'])->name('audio.check');

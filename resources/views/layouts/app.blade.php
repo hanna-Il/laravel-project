@@ -41,6 +41,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('verbs.index') }}">Опять про глаголы</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('audio.index') }}">Аудирование</a>
+            </li>
         </ul>
     </div>
 </nav>
