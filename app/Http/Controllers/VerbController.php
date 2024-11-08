@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Verb;
+use Illuminate\Http\Request;
 
 class VerbController extends Controller
 {
@@ -21,5 +22,16 @@ class VerbController extends Controller
             'options' => $options,
             'correctAnswer' => $correctAnswer
         ]);
+    }
+
+    public function check(Request $request) {
+        $selectedAnswer = $request->input('answer');
+        $correctAnswer = $request->input('correctAnswer');
+
+        if ($selectedAnswer === $correctAnswer) {
+            return redirect()->back()->with('success', 'Правильный ответ!');
+        } else {
+            return redirect()->back()->with('error', 'Неправильный ответ. Попробуйте снова');
+        }
     }
 }
